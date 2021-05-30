@@ -33,5 +33,4 @@ packages/
 build/
 node_modules/
 /index.js
-src/Classes/Utils/SecInfoProvider.ts
 config/default.json
