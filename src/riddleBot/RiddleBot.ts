@@ -8,8 +8,9 @@ var logic = new BotRiddleLogic();
 var token : String = SecInfoProvider.getToken();
 let app : Telega.Telegraf<Telega.ContextMessageUpdate>  = new Telegraf(token);
 
-
+app.command("/start", logic.startHandler);
 app.on("message", logic.riddleHandler);
+
 
 export const startRiddleBot = () => app.launch();
 export const stopRiddleBot = () => app.stop();

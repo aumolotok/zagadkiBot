@@ -19,4 +19,22 @@ export class BotRiddleLogic {
             }
         }
     } 
+
+    startHandler = (context : ContextMessageUpdate) => {
+        if (context.message?.text!) {
+            context.replyWithMarkdown(RiddleMaster.hello)
+            .then((value) => context.replyWithMarkdown(RiddleMaster.systemInfo))
+            .then((value) => context.replyWithMarkdown(RiddleMaster.rules))
+            .then(value => context.replyWithMarkdown(RiddleMaster.hints))
+            .then(value => context.replyWithMarkdown(RiddleMaster.reminder))
+            .then(value => context.replyWithMarkdown(RiddleMaster.first))
+            //.then((value) => value.)
+
+            //context.replyWithMarkdown(RiddleMaster.systemInfo);
+            //context.replyWithMarkdown(RiddleMaster.rules);
+            //context.replyWithMarkdown(RiddleMaster.hints);
+        }
+    } 
+
+    
 }
