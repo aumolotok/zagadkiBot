@@ -13,9 +13,9 @@ export class BotRiddleLogic {
             let riddleText = this.riddleMaster.getRiddle(context.message?.text!)
 
             if(riddleText == RiddleMaster.noRiddle) {
-                context.reply("Code is wrong! No riddle there!")
+                context.replyWithMarkdown("По этому коду _загадки_ *нет*!")
             } else {
-                context.reply(riddleText!)
+                context.replyWithMarkdown(riddleText!)
             }
         }
     } 
