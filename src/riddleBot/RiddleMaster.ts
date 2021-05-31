@@ -1,6 +1,6 @@
 export class RiddleMaster {
 
-    public static noRiddle: String = "No riddle";
+    public static noRiddle: string = "No riddle";
 
     public static hello: string = "Привет, Влад! Я - бот загадочник! Тебе будет весело!";
 
@@ -37,7 +37,7 @@ export class RiddleMaster {
             return this.mapOfRiddles.get(key);
         }
 
-        return "No riddle"
+        return RiddleMaster.noRiddle
     }
 
     constructor() {

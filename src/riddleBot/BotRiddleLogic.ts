@@ -1,5 +1,7 @@
 import { ContextMessageUpdate } from "telegraf";
 import { RiddleMaster } from "./RiddleMaster";
+import {createReadStream} from "fs";
+import {ImageMaster} from "../images/ImageMaster"
 
 export class BotRiddleLogic {
     riddleMaster : RiddleMaster;
@@ -23,6 +25,7 @@ export class BotRiddleLogic {
     startHandler = (context : ContextMessageUpdate) => {
         if (context.message?.text!) {
             context.replyWithMarkdown(RiddleMaster.hello)
+            .then((value) => context.replyWithPhoto({source: ImageMaster.getDratuti()}))
             .then((value) => context.replyWithMarkdown(RiddleMaster.systemInfo))
             .then((value) => context.replyWithMarkdown(RiddleMaster.rules))
             .then(value => context.replyWithMarkdown(RiddleMaster.hints))
