@@ -13,10 +13,7 @@ app.command("/start", logic.startHandler);
 
 app.on('photo', logic.answerForwardHandler);
 
-app.on("message", logic.riddleHandler);
-
-
-
+app.on("text", logic.riddleHandler);
 
 export const startRiddleBot = () => app.launch();
 export const stopRiddleBot = () => app.stop();

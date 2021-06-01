@@ -12,7 +12,7 @@ export class BotRiddleLogic {
     private static right : string = "Admin Верно";
     private static wrong : string = "Admin Неверно";
 
-    public vladId: number = 0;
+    public vladId: number | string = "-495337364";
 
     public adminId: string = SecInfoProvider.getAdminId();
 
@@ -26,13 +26,16 @@ export class BotRiddleLogic {
 
     riddleHandler = (context : ContextMessageUpdate) => {
 
+        console.log(context.chat?.title);
+        console.log(context.chat?.id);
+
         if(this.checkFotServiceMessage(context)) {
             return;
         }
 
-        // if(this.checkForAdminMessage(context)) {
-        //     return;
-        // }
+        if(this.checkForAdminMessage(context)) {
+            return;
+        }
 
 
         if (context.message?.text!) {
@@ -42,6 +45,7 @@ export class BotRiddleLogic {
                 context.replyWithMarkdown("По этому коду _загадки_ *нет*!")
             } else {
                 context.replyWithMarkdown(riddle!.text);
+                context.telegram.sendMessage(this.adminId, "Получена загадка \n" + riddle!.text, {parse_mode: 'Markdown'});
                 riddle?.action(context);
             }
         }
@@ -53,7 +57,8 @@ export class BotRiddleLogic {
         if(this.isItFromAdmin(context)) {
             context.telegram
             .sendPhoto(this.vladId, context.message!.photo![0].file_id)
-            .catch(reason => console.log(reason));
+            .catch(reason => console.log(reason)); 
+            return;
         }
 
         context.telegram
@@ -82,24 +87,10 @@ export class BotRiddleLogic {
 
         if(isItFromAdmin) {
             console.log("It is from admin");
-
-            switch (context.message?.text!) {
-                case BotRiddleLogic.right :
-                    console.log("Right");
-                    context.telegram.sendMessage(this.vladId, "Молодец!")
-                    break;
-                case BotRiddleLogic.wrong :
-                    console.log("Wrong")
-                    context.telegram.sendMessage(this.vladId, "Не угадал!")
-                    break;
-                default :
-                    break;
-            }
+            context.telegram.sendCopy(this.vladId, context.message).catch();
         }
 
         return isItFromAdmin;
-    
-
     }
 
 
