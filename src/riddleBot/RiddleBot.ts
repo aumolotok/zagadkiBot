@@ -11,6 +11,8 @@ var logic = new BotRiddleLogic(app.telegram);
 
 app.command("/start", logic.startHandler);
 
+app.help(logic.helpHandler);
+
 app.on('photo', logic.answerForwardHandler);
 
 app.on("text", logic.riddleHandler);

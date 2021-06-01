@@ -110,6 +110,14 @@ export class BotRiddleLogic {
         }
     } 
 
+    helpHandler = (context : ContextMessageUpdate) => {
+        if (context.message?.text!) {
+            context.replyWithMarkdown(RiddleMaster.rules)
+            .then(value => context.replyWithMarkdown(RiddleMaster.hints))
+            .then(value => context.replyWithMarkdown(RiddleMaster.reminder))
+        }
+    } 
+
     
 
     
