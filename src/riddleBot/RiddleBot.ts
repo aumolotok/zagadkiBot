@@ -9,12 +9,35 @@ let app : Telega.Telegraf<Telega.ContextMessageUpdate>  = new Telega.default(tok
 
 var logic = new BotRiddleLogic(app.telegram);
 
-app.command("/start", logic.startHandler);
-
+app.start(logic.startHandler);
 app.help(logic.helpHandler);
 
-app.on('photo', logic.answerForwardHandler);
 
+let adminHears = 
+    [
+        new RegExp("Admin ответ Пес"),
+        new RegExp("Admin ответ Почтальон"),
+        new RegExp("Admin ответ Вывеска"),
+        new RegExp("Admin ответ Паровоз"),
+        new RegExp("Admin ответ Днк")
+    ]
+
+app.hears(adminHears, logic.ansverHandler)
+
+let hint = 
+    [
+        new RegExp("\\!"),
+        new RegExp("\\?"),
+        new RegExp("Подсказка"),
+        new RegExp("подсказка"),
+    ]
+
+app.hears(hint, logic.askAdminForHint)
+
+app.hears(new RegExp("Admin"), logic.ansverHandler)
+
+
+app.on('photo', logic.answerForwardHandler);
 app.on("text", logic.riddleHandler);
 
 export const startRiddleBot = () => app.launch();

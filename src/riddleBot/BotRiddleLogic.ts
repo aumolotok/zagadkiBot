@@ -24,6 +24,19 @@ export class BotRiddleLogic {
         this.riddleMaster = new RiddleMaster();
     }
 
+    ansverHandler = (context : ContextMessageUpdate) => {
+
+        this.riddleMaster.getAllKeys().forEach(element => {
+            if(context.message!.text!.includes(element)) {
+                return this.riddleMaster.getRiddleByKey(element)?.answerAction(context, this.vladId);
+            }
+        });
+    }
+
+    askAdminForHint = (context : ContextMessageUpdate) => {
+        context.telegram.sendMessage(this.adminId, context!.message!.text!)
+    }
+
     riddleHandler = (context : ContextMessageUpdate) => {
 
         console.log(context.chat?.title);
