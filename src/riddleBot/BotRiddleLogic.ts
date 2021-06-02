@@ -86,6 +86,7 @@ export class BotRiddleLogic {
             case BotRiddleLogic.iAmVlad :
                 this.vladId = context.chat!.id;
                 console.log("I am Vlad " + this.vladId)
+                context.telegram.sendMessage(this.adminId, "Игрок зарегестрировался! " + context.from?.username);
                 isItServiceMessage = true;
                 break;
             default:
