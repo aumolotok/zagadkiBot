@@ -56,8 +56,18 @@ export class RiddleMaster {
                 (context) => {},
                 (context, chatId) => {context.telegram.sendMessage(chatId, "Ну ничего себе! Так держать! Введи на поисковом сайте код поиска - " + this.keysToAnswers.get("Почтальон"))}))
             .set("463", new Riddle(
-                "Тут должна быть загадка про вывеску",
-                (context) => {},
+                "Я сфотографировал вывеску! Ой, номера дома то не видно! Но я *стоя на том же месте* покрутился и сфоткал что вижу вокруг. Найди мне эту вывеску с номером дома!",
+                (context) => {
+                    context.replyWithPhoto({source: ImageMaster.getSign(0)})
+                        .then(value => {
+                            context.replyWithPhoto({source: ImageMaster.getSign(1)});
+                            context.replyWithPhoto({source: ImageMaster.getSign(2)});
+                            context.replyWithPhoto({source: ImageMaster.getSign(3)});
+                            context.replyWithPhoto({source: ImageMaster.getSign(4)});
+                            context.replyWithPhoto({source: ImageMaster.getSign(5)});
+                        }
+                        )
+                },
                 (context, chatId) => {context.telegram.sendMessage(chatId, "Введи на поисковом сайте код поиска - " + this.keysToAnswers.get("Вывеска"))}))   
             .set("554", new Riddle(
                 "Раньше все из *нас* любили _пАрить_, зальемся и начнем пыхтеть… Теперь все у нас на электричестве или на горючей жиже. Один стою, пара бы пустить… ",
