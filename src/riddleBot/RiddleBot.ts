@@ -15,13 +15,13 @@ app.help(logic.helpHandler);
 
 let adminHears = 
     [
+        new RegExp("Admin ответ Барак"),
         new RegExp("Admin ответ Пес"),
         new RegExp("Admin ответ Почтальон"),
         new RegExp("Admin ответ Вывеска"),
         new RegExp("Admin ответ Паровоз"),
         new RegExp("Admin ответ Днк")
     ]
-
 app.hears(adminHears, logic.ansverHandler)
 
 let hint = 
@@ -31,14 +31,19 @@ let hint =
         new RegExp("Подсказка"),
         new RegExp("подсказка"),
     ]
-
 app.hears(hint, logic.askAdminForHint)
+
+app.hears(new RegExp("Admin reset"), logic.vladIdToDefault);
 
 app.hears(new RegExp("Admin"), logic.ansverHandler)
 
 
+
+app.action("iAmReady", logic.registerUserHandler);
+
 app.on('photo', logic.answerForwardHandler);
 app.on("text", logic.riddleHandler);
+
 
 export const startRiddleBot = () => app.launch();
 export const stopRiddleBot = () => app.stop();

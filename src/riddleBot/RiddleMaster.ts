@@ -5,11 +5,11 @@ export class RiddleMaster {
 
     public static noRiddle: string = "No riddle";
 
-    public static hello: string = "Привет, Влад! Я - бот загадочник! Тебе будет весело!";
+    public static hello: string = "Привет, Влад! Я - бот загадочник! Тебе будет весело! Нажми \"Я готов\" и мы начнем!";
 
     public static rules: string = 
 `Правила: В загадках зашифровано *место* или *объект* в пешей доступности, который можно сфотографировать *с улицы*.
-Ответом на все загадки, *кроме первой*, должны быть селфи *всей твоей команды* и загаданного предмета
+Ответом на все загадки должны быть селфи *всей твоей команды* и загаданного предмета или места
 Тебе нужно прислать мне это селфи чтобы получить дальнейшие инструкции`;
 
     public static hints: string = 
@@ -31,12 +31,22 @@ export class RiddleMaster {
 
     public static systemInfo: string = "Пришли мне код загадки и я тут же вышлю ее тебе!"
 
+    public static aboutSite: string =
+`Отлично! Вот и твоя команда!
+А это сайт для отслеживания Ярика - https://aumolotokvlad.000webhostapp.com/index.html
+Скопируй себе в браузер и держи под рукой!
+На сайте будет появляться трехзначные коды - вводи их боту, чтобы получить новые загадки!
+По ходу разгадок ты так же будешь получать пятизначные коды - это коды поиска! Смело вводи их в поле ввода на сайт!
+Кстати, на сайте уже должен быть код для загадки!
+
+`
+
     private mapOfRiddles = 
         new Map<string, Riddle>()
             .set("1", new Riddle(
                 "Команда нужна всем, даже _Американцам._ Ведь без команды в _США_ справится максимум _премьер-министр_. или _сенатор_. Но точно не *ОН* ",
                 (context) => {},
-                (context) => {}))
+                (context, chatId) => {context.telegram.sendMessage(chatId, RiddleMaster.aboutSite, {parse_mode: 'Markdown'});}))
             .set("283", new Riddle(
                 "Собака неплохо соблюдает _дресс код_. Да и фото отличное. Пришли фото с собакой, которая придерживается такого же стиля. Картинки из инета не канают",
                 (context) => {context.replyWithPhoto({source: ImageMaster.getDog()})},
@@ -60,6 +70,7 @@ export class RiddleMaster {
 
     private keysToAnswers =
         new Map<string, string>()
+                .set("Барак", "0")
                 .set("Пес", "58977")
                 .set("Почтальон", "74112")
                 .set("Вывеска", "93463")
@@ -68,6 +79,7 @@ export class RiddleMaster {
     
     private keyToCode = 
         new Map<string, string>()
+                .set("Барак", "1")
                 .set("Пес", "283")
                 .set("Почтальон", "341")
                 .set("Вывеска", "463")

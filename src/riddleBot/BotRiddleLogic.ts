@@ -41,10 +41,7 @@ export class BotRiddleLogic {
 
         console.log(context.chat?.title);
         console.log(context.chat?.id);
-
-        if(this.checkFotServiceMessage(context)) {
-            return;
-        }
+        console.log(context.from?.username);
 
         if(this.checkForAdminMessage(context)) {
             return;
@@ -79,21 +76,25 @@ export class BotRiddleLogic {
             .catch(reason => console.log(reason));
     }
 
-    private checkFotServiceMessage = (context : ContextMessageUpdate) => {
-        let isItServiceMessage = false;
-
-        switch (context.message?.text!) {
-            case BotRiddleLogic.iAmVlad :
-                this.vladId = context.chat!.id;
-                console.log("I am Vlad " + this.vladId)
-                context.telegram.sendMessage(this.adminId, "Игрок зарегестрировался! " + context.from?.username);
-                isItServiceMessage = true;
-                break;
-            default:
-                break
+    public registerUserHandler = (context: ContextMessageUpdate) => {
+        if(this.checkForAdminMessage(context)) {
+            context.reply("Hello, admin!");
+            console.log("Hello from Admin");
+            return;
         }
 
-        return isItServiceMessage;
+        this.vladId = context.chat!.id;
+        console.log("Vlad has been registred by " + this.vladId)
+        context.telegram.sendMessage(this.adminId, "Игрок зарегестрировался! " + context.from?.username); 
+        this.sendRules(context);
+    }
+
+    public vladIdToDefault = (context: ContextMessageUpdate) => {
+        let defId = "-495337364";
+        if(this.checkForAdminMessage(context)) {
+            this.vladId = defId;
+            console.log("Id игрока возвращено к дефолтному " + this.vladId)
+        }
     }
 
     private checkForAdminMessage = (context : ContextMessageUpdate) => {
@@ -113,16 +114,33 @@ export class BotRiddleLogic {
     }
 
     startHandler = (context : ContextMessageUpdate) => {
-        if (context.message?.text!) {
-            context.replyWithMarkdown(RiddleMaster.hello)
-            .then((value) => context.replyWithPhoto({source: ImageMaster.getDratuti()}))
-            .then((value) => context.replyWithMarkdown(RiddleMaster.systemInfo))
+        context.replyWithPhoto({source: ImageMaster.getDratuti()})
+            .then((value) => context.replyWithMarkdown(RiddleMaster.hello))
+            .then(
+                (value) => context.telegram.sendMessage(
+                    context.chat!.id,
+                    "Вот тут",
+                    {
+                        reply_markup: {
+                            inline_keyboard: [
+                                [
+                                    {
+                                        text: "Я готов",
+                                        callback_data: "iAmReady"
+                                    }
+                                ]
+                            ]
+                        }
+                    }))
+    } 
+
+    sendRules = (context : ContextMessageUpdate) => {
+        context.replyWithMarkdown(RiddleMaster.systemInfo)
             .then((value) => context.replyWithMarkdown(RiddleMaster.rules))
             .then(value => context.replyWithMarkdown(RiddleMaster.hints))
             .then(value => context.replyWithMarkdown(RiddleMaster.reminder))
             .then(value => context.replyWithMarkdown(RiddleMaster.first))
-        }
-    } 
+    }
 
     helpHandler = (context : ContextMessageUpdate) => {
         if (context.message?.text!) {
